@@ -17,15 +17,23 @@ GPIO.setup(GPIO_PIN, GPIO.IN)
 
 # Funktion zum Abspielen der Audio-Dateien
 def play_audio_file(file_path):
-    os.system("arecord -D hw:1 -f S16_LE -c 1 -d 10 -r 44100 " + RECORDING_FILE)
+    os.system("aplay " + file_path)
 
 # Schleife, die auf Benutzereingaben wartet
 while True:
-    # Überprüfung, ob das Telefonhörer aufgelegt ist
-    if GPIO.input(GPIO_PIN):
-        # Wenn das Telefonhörer aufgelegt ist, wird die Voicemail abgespielt
+    # Überprüfung, ob das Telefonhörer abgenommen wurde
+    if not GPIO.input(GPIO_PIN):
+        # Wenn das Telefonhörer abgenommen wurde, wird eine kurze Pause eingelegt
+        time.sleep(2.5)
+
+        # Die Voicemail wird abgespielt
         print("Hörer abgenommen, bitte sprechen Sie nach dem Signalton")
         play_audio_file(VOICEMAIL_FILE)
+
+        # Eine weitere Pause wird eingelegt
+        time.sleep(1)
+
+        # Der Signalton wird abgespielt
         play_audio_file(BEEP_FILE)
 
         # Die Audioaufnahme beginnt
