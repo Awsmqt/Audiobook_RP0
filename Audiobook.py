@@ -22,7 +22,7 @@ def play_audio_file(file_path):
 
 # Funktion zum Starten der Aufnahme
 def start_recording():
-    subprocess.Popen(["arecord", "-D", "hw:1", "-f", "S16_LE", "-c", "1", "-r", "44100", RECORDING_FILE])
+   subprocess.Popen(["arecord", "-D", "hw:1", "-f", "S16_LE", "-c", "2", "-r", "44100", "-d", "5", RECORDING_FILE])
 
 # Funktion zum Beenden der Aufnahme
 def stop_recording(process):
