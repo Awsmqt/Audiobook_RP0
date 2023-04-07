@@ -1,7 +1,7 @@
-# coding=utf-8
 import os
 import time
 import RPi.GPIO as GPIO
+import subprocess
 
 # Hier definieren wir die Dateipfade der Audio-Dateien
 VOICEMAIL_FILE = "/home/ab/Audiobook/Aufnahme/voicemail.wav"
@@ -19,29 +19,39 @@ GPIO.setup(GPIO_PIN, GPIO.IN)
 def play_audio_file(file_path):
     os.system("aplay " + file_path)
 
+# Funktion zum Starten der Aufnahme
+def start_recording():
+    subprocess.Popen(["arecord", "-D", "hw:1", "-f", "S16_LE", "-c", "1", "-r", "44100", RECORDING_FILE])
+
+# Funktion zum Beenden der Aufnahme
+def stop_recording(process):
+    # Beenden des Aufnahme-Prozesses
+    process.terminate()
+    # Warten, bis der Prozess beendet ist
+    process.wait()
+    print("Aufnahme beendet")
+
 # Schleife, die auf Benutzereingaben wartet
 while True:
-    # Überprüfung, ob das Telefonhörer abgenommen wurde
-    if not GPIO.input(GPIO_PIN):
-        # Wenn das Telefonhörer abgenommen wurde, wird eine kurze Pause eingelegt
-        time.sleep(2.5)
-
-        # Die Voicemail wird abgespielt
+    # Überprüfung, ob das Telefonhörer aufgelegt ist
+    if GPIO.input(GPIO_PIN):
+        # Wenn das Telefonhörer aufgelegt ist, wird die Voicemail abgespielt
         print("Hörer abgenommen, bitte sprechen Sie nach dem Signalton")
         play_audio_file(VOICEMAIL_FILE)
-
-        # Eine weitere Pause wird eingelegt
-        time.sleep(1)
-
-        # Der Signalton wird abgespielt
         play_audio_file(BEEP_FILE)
 
         # Die Audioaufnahme beginnt
-        os.system("arecord -D hw:1 -f S16_LE -c 1 -d 10 -r 44100 " + RECORDING_FILE)
-        print("Aufnahme beendet")
+        recording_process = start_recording()
+        print("Aufnahme gestartet")
 
-        # Die Schleife wird beendet
-        break
+        # Schleife, die auf das Auflegen des Hörers wartet
+        while True:
+            # Überprüfung, ob der Hörer aufgelegt wurde
+            if not GPIO.input(GPIO_PIN):
+                # Aufnahme beenden
+                stop_recording(recording_process)
+                # Schleife beenden und auf neue Eingabe warten
+                break
 
 # Hier räumen wir die GPIO-Pins auf, bevor das Programm endet
 GPIO.cleanup()
