@@ -17,7 +17,7 @@ GPIO.setup(GPIO_PIN, GPIO.IN)
 
 # Funktion zum Abspielen der Audio-Dateien
 def play_audio_file(file_path):
-    os.system("aplay -D hw:1 " + file_path)
+    os.system("arecord -D hw:1 -f S16_LE -c 1 -d 10 -r 44100 " + RECORDING_FILE)
 
 # Schleife, die auf Benutzereingaben wartet
 while True:
