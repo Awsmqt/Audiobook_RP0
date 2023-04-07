@@ -29,7 +29,7 @@ while True:
         play_audio_file(BEEP_FILE)
 
         # Die Audioaufnahme beginnt
-        os.system("arecord -D hw:1 -f S16_LE -d 10 -r 44100 " + RECORDING_FILE)
+        os.system("arecord -D hw:1 -f S16_LE -c 1 -d 10 -r 44100 " + RECORDING_FILE)
         print("Aufnahme beendet")
 
         # Die Schleife wird beendet
