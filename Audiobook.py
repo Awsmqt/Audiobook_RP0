@@ -9,7 +9,7 @@ BEEP_FILE = "/home/ab/Audiobook/beep.wav"
 RECORDING_FILE = "/home/ab/Audiobook/Recording/recording.wav"
 
 # Hier definieren wir die GPIO-Pins, die wir verwenden möchten
-GPIO_PIN = 18
+GPIO_PIN = 22
 
 # Hier initialisieren wir die GPIO-Pins
 GPIO.setmode(GPIO.BCM)
