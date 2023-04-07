@@ -18,7 +18,7 @@ GPIO.setup(GPIO_PIN, GPIO.IN)
 
 # Funktion zum Abspielen der Audio-Dateien
 def play_audio_file(file_path):
-    os.system("aplay " + file_path)
+    os.system("aplay -D plughw:1,0" " + file_path)
 
 # Funktion zum Starten der Aufnahme
 def start_recording():
