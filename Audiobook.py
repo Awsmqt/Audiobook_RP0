@@ -5,7 +5,7 @@ import RPi.GPIO as GPIO
 import subprocess
 
 # Hier definieren wir die Dateipfade der Audio-Dateien
-VOICEMAIL_FILE = "/home/ab/Audiobook/Aufnahme/voicemail.wav"
+VOICEMAIL_FILE = "/home/ab/Audiobook/voicemail.wav"
 BEEP_FILE = "/home/ab/Audiobook/beep.wav"
 RECORDING_FILE = "/home/ab/Audiobook/Recording/recording.wav"
 
